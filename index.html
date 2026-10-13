@@ -203,9 +203,8 @@ details[open] summary:after{content:"−"}
     <div class="home-title">МУРЛИ КРСТОЗБОРИ</div>
     <div class="home-sub">Архива на крстозбори · пристапна кирилична тастатура</div>
     <div class="home-card">
-      <div class="home-year">2026</div>
-      <div class="month-title">Октомври</div>
-      <div class="archive-grid" id="archiveGrid">
+      
+      <div id="archiveGrid">
         <button class="archive-item" data-id="2026-10-01">10/1</button>
       </div>
       <div class="home-actions">
@@ -216,8 +215,10 @@ details[open] summary:after{content:"−"}
       <div class="import-help">
         Може да се увезе еден JSON крстозбор или пакет со повеќе крстозбори.
       </div>
+      <button class="home-action" id="syncBtn" type="button" style="width:100%;margin-top:10px">↻ Провери за нови крстозбори</button>
+      <div class="import-help" id="catalogueNotice" role="status" aria-live="polite">Новите крстозбори се преземаат автоматски кога има интернет.</div>
       <div id="homeNotice" role="status" aria-live="polite"></div>
-      <div class="import-help">Верзија 16 · тест · поправка 5</div>
+      <div class="import-help">Верзија 17 · тест · каталог</div>
     </div>
   </div>
 </section>
@@ -733,12 +734,19 @@ function getLibrary(){
   if(invalid){document.getElementById("homeNotice").textContent=`⚠ ${invalid} невалидни локални записи се прескокнати; оригиналот не е избришан.`;}
   return result;
 }
+function getRemoteLibrary(){
+  const raw=readJSONStorage("murli-remote-library-v1",[]);
+  if(!Array.isArray(raw))return [];
+  const valid=[];
+  for(const puzzle of raw){try{valid.push(normalizePuzzle(puzzle));}catch(e){console.warn("Прескокнат оштетен преземен крстозбор",e);}}
+  return valid;
+}
 function getPuzzle(id){
   const imported=getLibrary().find(x=>x.id===id);
   if(imported) return imported; // A consciously accepted local replacement has priority.
   if(id===BUILTIN_CROSSWORD.id) return BUILTIN_CROSSWORD;
   if(id===BUILTIN_CROSSWORD_02.id) return BUILTIN_CROSSWORD_02;
-  return null;
+  return getRemoteLibrary().find(x=>x.id===id)||null;
 }
 function backupPreviousProgress(id){
   const key=`murli-crossword-v2-${id}`;
@@ -772,20 +780,26 @@ function showHome(){
 }
 function renderArchive(){
   archiveGrid.innerHTML="";
-  const items=[
-    {id:BUILTIN_CROSSWORD.id,title:BUILTIN_CROSSWORD.title},
-    {id:BUILTIN_CROSSWORD_02.id,title:BUILTIN_CROSSWORD_02.title}
-  ];
-  getLibrary().forEach(x=>{
-    if(x.id && !items.some(i=>i.id===x.id)) items.push({id:x.id,title:x.title||`${x.month}/${x.day}`});
-  });
-  items.sort((a,b)=>a.id.localeCompare(b.id));
-  items.forEach(item=>{
+  const items=new Map();
+  for(const puzzle of [BUILTIN_CROSSWORD,BUILTIN_CROSSWORD_02,...getRemoteLibrary(),...getLibrary()]){
+    const x=normalizePuzzle(puzzle);items.set(x.id,x);
+  }
+  const months=["Јануари","Февруари","Март","Април","Мај","Јуни","Јули","Август","Септември","Октомври","Ноември","Декември"];
+  let previousYear,previousMonth,group;
+  for(const item of [...items.values()].sort((a,b)=>a.id.localeCompare(b.id))){
+    if(item.year!==previousYear){
+      const year=document.createElement("div");year.className="home-year";year.textContent=item.year;
+      archiveGrid.appendChild(year);previousYear=item.year;previousMonth=null;
+    }
+    if(item.month!==previousMonth){
+      const month=document.createElement("div");month.className="month-title";month.textContent=months[item.month-1];
+      group=document.createElement("div");group.className="archive-grid";
+      archiveGrid.append(month,group);previousMonth=item.month;
+    }
     const b=document.createElement("button");
-    b.className="archive-item";b.textContent=item.title;
-    b.onclick=()=>showGame(item.id);
-    archiveGrid.appendChild(b);
-  });
+    b.className="archive-item";b.textContent=item.title;b.title=item.id;
+    b.onclick=()=>showGame(item.id);group.appendChild(b);
+  }
 }
 document.getElementById("archiveMini").onclick=showHome;
 document.getElementById("continueBtn").onclick=()=>showGame("2026-10-01");
@@ -847,6 +861,7 @@ renderArchive();
 
 </script>
 
+<script src="./catalogue-sync.js"></script>
 <script id="pwa-install-script">
 (() => {
   const banner=document.getElementById("updateBanner");

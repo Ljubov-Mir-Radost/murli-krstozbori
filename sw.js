@@ -1,8 +1,8 @@
 /* Murli Крстозбори v16 — only public, same-origin app assets are cached. */
 const CACHE_PREFIX = "murli-krstozbori-";
-const CACHE = `${CACHE_PREFIX}shell-v16-6`;
+const CACHE = `${CACHE_PREFIX}shell-v17-1`;
 const ASSETS = [
-  "./", "./index.html", "./manifest.webmanifest",
+  "./", "./index.html", "./manifest.webmanifest", "./catalogue-sync.js",
   "./Murli_Krstozbor_2026-10-01.json",
   "./Murli_Krstozbor_2026-10-02.json",
   "./Murli_Krstozbori_2026-10_01-02.json",
