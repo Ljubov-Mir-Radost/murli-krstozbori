@@ -10,6 +10,11 @@
       "id": "2026-10-02",
       "file": "crosswords/2026-10-02.json",
       "sha256": "330fbf45c2c740503408899dcf223f8b54bc1cfcf0124a9e1794b2eeb447ecd2"
+    },
+    {
+      "id": "2026-10-14",
+      "file": "crosswords/2026-10-14.json",
+      "sha256": "cc4e6c7213168c80cf18b8989a5db8d1cd38949830a1bfba86e014d64f9c9d35"
     }
   ]
 }
