@@ -1,12 +1,9 @@
 /* Murli Крстозбори v16 — only public, same-origin app assets are cached. */
 const CACHE_PREFIX = "murli-krstozbori-";
-const CACHE = `${CACHE_PREFIX}shell-v17-1`;
+const CACHE = `${CACHE_PREFIX}compact-main-v18-1`;
 const ASSETS = [
-  "./", "./index.html", "./manifest.webmanifest", "./catalogue-sync.js",
-  "./Murli_Krstozbor_2026-10-01.json",
-  "./Murli_Krstozbor_2026-10-02.json",
-  "./Murli_Krstozbori_2026-10_01-02.json",
-  "./icons/icon-192.png", "./icons/icon-512.png"
+  "./", "./index.html", "./manifest.webmanifest", "./catalogue-sync.js", "./compact-layout.js",
+  "./crosswords/2026-10-14.json", "./icons/icon-192.png", "./icons/icon-512.png"
 ];
 const BASE = new URL("./", self.registration.scope);
 const APP_URLS = new Set(ASSETS.map(path => new URL(path, BASE).href));

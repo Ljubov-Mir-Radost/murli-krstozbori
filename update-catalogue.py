@@ -4,6 +4,7 @@ import json,hashlib,datetime,re
 root=Path(__file__).resolve().parent
 entries=[]
 for f in sorted((root/'crosswords').glob('*.json')):
+    if f.stem in {'2026-10-01','2026-10-02'}: continue
     if not re.fullmatch(r'\d{4}-\d{2}-\d{2}',f.stem):
         raise ValueError(f'Invalid filename: {f.name}')
     date=datetime.date.fromisoformat(f.stem)

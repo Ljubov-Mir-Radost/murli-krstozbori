@@ -1,7 +1,7 @@
 {
-  "name": "Murli Крстозбори",
-  "short_name": "Murli Крстозбори",
-  "description": "Мобилна PWA апликација за крстозбори од Мурли.",
+  "name": "Мурли Крстозбори",
+  "short_name": "Мурли",
+  "description": "Крстозбори инспирирани од Мурли.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
