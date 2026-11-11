@@ -5,6 +5,11 @@
       "id": "2026-10-14",
       "file": "crosswords/2026-10-14.json",
       "sha256": "db2d9c476d00855052d7eb2ffe3ca5b2dfdc1535a65c7479d6e6043120b85096"
+    },
+    {
+      "id": "2026-11-12",
+      "file": "crosswords/2026-11-12.json",
+      "sha256": "8aa17182957cbace23f04e232ab14ef9e9d9c1267a9b290fe962341d6ea807d8"
     }
   ]
 }
